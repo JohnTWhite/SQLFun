@@ -1,0 +1,126 @@
+package SQL_Fun;
+
+// Use the JDBC driver  
+import java.sql.*;
+
+
+  
+    public class SQLDatabaseConnection {  
+    	
+    
+     public static void main(String[] args) throws Exception {
+    	 
+    	 System.out.println("First step");
+    	 createTable();
+    		 
+    }
+    
+    
+    public static Connection getConnection() throws Exception {
+    	
+    	try{
+    		String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+        //TODO: no pw provided, make sure to provide
+    		String url =  "jdbc:sqlserver://zifp.database.windows.net:1433;database=zifp;user=zifp@zifp;password="";encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    		System.out.println("Connection strings successful");
+    		Class.forName(driver);
+    		System.out.println("Class Driver successful");
+    		Connection con = DriverManager.getConnection(url);
+    		System.out.println("Connection successful");
+    		
+    		return con;
+    		
+    	}catch(Exception e){
+    		
+    		System.out.println("Did not work: "+e);
+    		
+    	}
+    	
+    	return null;
+    	
+    }
+    
+  private static void createTable(){
+            Statement statement = null;   
+            ResultSet resultSet = null;
+            Connection connection = null;  
+            PreparedStatement prepsInsertProduct = null;
+            System.out.println("Connection resources created");
+                          
+            try {  
+                
+                
+                connection = getConnection();  
+                System.out.println("Connection created");
+                
+                
+                statement = connection.createStatement();
+                System.out.println("statment created");
+                
+                
+                String createTable = Create_Table_String("TRIAL2");
+                
+                //statement.executeUpdate(createTable);
+                resultSet = statement.executeQuery(createTable);
+                
+                System.out.println("Table results");
+                
+                String a = " ";
+                
+                while(resultSet.next()){
+//                	int count = resultSet.getInt("wordCount");
+//                	int zcount = resultSet.getInt("zipfCount");
+//                	String word = resultSet.getString("word");
+                	
+                	a +=  resultSet.getString(1) + "/";
+                	a +=  resultSet.getString(2) + "-";
+                	a +=  resultSet.getString(3) + " ";
+                	
+                	System.out.println(a);
+                	
+//                	System.out.println(word + " ");
+//                	System.out.println(count + " ");
+//                	System.out.println(zcount + " ");
+                	
+         
+                	
+                	
+                }
+                
+                connection.close();
+                String[] b = a.split("/");
+                System.out.println(b[1]+" " + b[2]);
+         
+             }
+            catch (Exception e) {  
+                System.out.println("Didn't work: " + e);
+                } 
+            }  
+         
+        
+
+        
+        
+        
+        
+		private static String Create_Table_String(String tableName) {
+			
+			
+			String CreateTableStatment = 
+//					"CREATE TABLE " + tableName.toUpperCase()
+//					+" ( "
+//					+ "word VARCHAR(255) not NULL, "
+//					+ "wordCount INTEGER, "
+//					+ "zipfCount INTEGER"
+//					+ " PRIMARY KEY ( word )) ";
+//					+"INSERT INTO " + tableName.toUpperCase()
+//					+ " ( word,  wordCount, zipfCount) VALUES ( "
+//					//TODO remove placeholder variables.
+//					+ " 'bird', 22, 23 );";
+					"SELECT word, wordCount, zipfCount FROM "+tableName;
+//					"SELECT * FROM information_schema.tables WHERE TABLE_TYPE='BASE TABLE'";
+			
+			return CreateTableStatment; 
+			
+		}  
+    }  
