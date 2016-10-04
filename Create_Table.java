@@ -8,7 +8,7 @@ public class Create_Table {
 	
 	//my information to log into db
 	private static String user_name = "ninjerman";
-	private static String password = "Great1";
+	private static String password = "G";
 	
 	/*
 	 * title of table will be what we name the table 
